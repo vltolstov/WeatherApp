@@ -1,4 +1,4 @@
-package org.weather.app;
+package org.weather.app.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ public class HelloController {
 
     @GetMapping("/hello-world")
     public String sayHello() {
-        return "hello-world";
+        return "hello/hello-world";
     }
 
 }
