@@ -118,12 +118,15 @@ public class SpringConfig implements WebMvcConfigurer {
         return new HibernateTransactionManager(sessionFactory);
     }
 
-    @Bean(initMethod = "migrate")
+    @Bean
     public Flyway flyway(DataSource dataSource) {
-        return Flyway.configure()
+        Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
+                .createSchemas(true)
                 .schemas(schema)
                 .locations("classpath:db/migration")
                 .load();
+        flyway.migrate();
+        return flyway;
     }
 }
