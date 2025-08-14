@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS schema_main;
+CREATE SCHEMA IF NOT EXISTS schema_test;
