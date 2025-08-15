@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$CONTENT_TITLE - WeatherApp">WeatherApp</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<section layout:fragment="content">
+    <p>Здесь будет контент страниц по умолчанию</p>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
