@@ -59,6 +59,27 @@ public class SpringConfig implements WebMvcConfigurer {
     @Value("${app.schema}")
     private String schema;
 
+    @Value("${spring.thymeleaf.prefix}")
+    private String prefix;
+
+    @Value("${spring.thymeleaf.suffix}")
+    private String suffix;
+
+    @Value("${spring.thymeleaf.mode}")
+    private String mode;
+
+    @Value("${spring.thymeleaf.encoding}")
+    private String encoding;
+
+    @Value("${spring.thymeleaf.contentType}")
+    private String contentType;
+
+    @Value("${spring.jpa.packages-to-scan}")
+    private String packagesToScan;
+
+    @Value("${spring.flyway.locations}")
+    private String flywayLocations;
+
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -68,8 +89,10 @@ public class SpringConfig implements WebMvcConfigurer {
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("WEB-INF/views/");
-        templateResolver.setSuffix(".html");
+        templateResolver.setPrefix(prefix);
+        templateResolver.setSuffix(suffix);
+        templateResolver.setTemplateMode(mode);
+        templateResolver.setCharacterEncoding(encoding);
         return templateResolver;
     }
 
@@ -77,6 +100,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.addDialect(new nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect());
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }
@@ -85,6 +109,8 @@ public class SpringConfig implements WebMvcConfigurer {
     public void configureViewResolvers(ViewResolverRegistry registry){
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding(encoding);
+        viewResolver.setContentType(contentType);
         registry.viewResolver(viewResolver);
     }
 
@@ -102,7 +128,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
         factory.setDataSource(dataSource);
-        factory.setPackagesToScan("org.weather.app.models");
+        factory.setPackagesToScan(packagesToScan);
         Properties props = new Properties();
         props.put("hibernate.dialect", hibernateDialect);
         props.put("hibernate.hbm2ddl.auto", hbm2ddl);
@@ -124,7 +150,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 .dataSource(dataSource)
                 .createSchemas(true)
                 .schemas(schema)
-                .locations("classpath:db/migration")
+                .locations(flywayLocations)
                 .load();
         flyway.migrate();
         return flyway;
