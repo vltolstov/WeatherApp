@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title layout:title-pattern="$CONTENT_TITLE - WeatherApp">WeatherApp</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap/bootstrap.min.css}"/>
 </head>
 <body>
 
@@ -16,5 +17,6 @@
 
 <div th:replace="fragments/footer :: footer"></div>
 
+<script th:src="@{/resources/js/bootstrap/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
