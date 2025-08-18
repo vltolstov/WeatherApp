@@ -1,14 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main}">
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}">
 <head>
-    <title>Registration</title>
+    <title>Регистрация</title>
 </head>
 <body>
 
 <section layout:fragment="content">
-    <p>Registration</p>
+    <form class="login-form border rounded p-4 shadow-sm bg-white">
+        <h2 class="h5 mb-3 text-center">Регистрация</h2>
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Логин" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Пароль" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Подтверждение пароля" required>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Регистрация</button>
+        </div>
+    </form>
 </section>
 
 </body>
