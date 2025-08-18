@@ -1,8 +1,24 @@
-<div th:fragment="header">
-    <header>
-        <h1>Шапка</h1>
-        <nav>
-            <a th:href="@{/}">Пункт меню</a>
-        </nav>
-    </header>
-</div>
+<header class="border-bottom py-2" th:fragment="header">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between">
+
+            <div class="me-auto">
+                <a href="/" class="navbar-brand fw-bold">Weather-App</a>
+            </div>
+
+            <div class="mx-auto" style="max-width: 400px; flex:1;">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Найти</button>
+                </form>
+            </div>
+
+            <div class="ms-auto">
+                <a href="#" class="btn btn-primary">Войти</a>
+                <a href="#" class="btn btn-primary">Выйти</a>
+                <a href="#" class="btn btn-outline-secondary ms-2">Регистрация</a>
+            </div>
+
+        </div>
+    </div>
+</header>
