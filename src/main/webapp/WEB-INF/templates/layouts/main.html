@@ -4,18 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title layout:title-pattern="$CONTENT_TITLE - WeatherApp">WeatherApp</title>
-    <link rel="stylesheet" th:href="@{/resources/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/resources/css/bootstrap/bootstrap.min.css}"/>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-<div th:replace="fragments/header :: header"></div>
+<header th:replace="fragments/header :: header"></header>
 
-<section layout:fragment="content">
-    <p>Здесь будет контент страниц по умолчанию</p>
-</section>
+<main class="flex-fill d-flex align-items-center justify-content-center">
+    <section layout:fragment="content">
+        <div class="container-max px-3 text-center">
+            <p>Здесь будет контент страниц по умолчанию</p>
+        </div>
+    </section>
+</main>
 
-<div th:replace="fragments/footer :: footer"></div>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 <script th:src="@{/resources/js/bootstrap/bootstrap.bundle.min.js}"></script>
 </body>
