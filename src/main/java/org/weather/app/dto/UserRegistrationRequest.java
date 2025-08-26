@@ -15,7 +15,7 @@ import org.weather.app.validation.PasswordMatches;
 @Getter
 @Setter
 @PasswordMatches
-public class UserRegistrationDto {
+public class UserRegistrationRequest {
 
     @NotBlank(message = "{user.login.notBlank}")
     @Size(min = 3, max = 15, message = "{user.login.size}")
