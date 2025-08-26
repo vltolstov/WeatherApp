@@ -1,7 +1,7 @@
 package org.weather.app.config;
 
+import jakarta.persistence.EntityManagerFactory;
 import org.flywaydb.core.Flyway;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -9,9 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -27,6 +30,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("org.weather.app")
+@EnableJpaRepositories(basePackages = "org.weather.app.repository")
 @PropertySource("classpath:application.properties")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
@@ -107,7 +111,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void configureViewResolvers(ViewResolverRegistry registry){
+    public void configureViewResolvers(ViewResolverRegistry registry) {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding(encoding);
@@ -126,23 +130,26 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setPackagesToScan(packagesToScan);
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource);
+        emf.setPackagesToScan(packagesToScan);
+        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
         Properties props = new Properties();
         props.put("hibernate.dialect", hibernateDialect);
         props.put("hibernate.hbm2ddl.auto", hbm2ddl);
         props.put("hibernate.show_sql", showSql);
         props.put("hibernate.format_sql", formatSql);
         props.put("hibernate.default_schema", schema);
-        factory.setHibernateProperties(props);
-        return factory;
+
+        emf.setJpaProperties(props);
+        return emf;
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        return new HibernateTransactionManager(sessionFactory);
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
     @Bean
