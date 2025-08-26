@@ -1,4 +1,4 @@
-package org.weather.app.models;
+package org.weather.app.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
