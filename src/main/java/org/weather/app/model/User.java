@@ -1,4 +1,4 @@
-package org.weather.app.models;
+package org.weather.app.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "username")
     private String name;
 
     @Column(nullable = false)
