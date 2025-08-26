@@ -11,14 +11,6 @@ public class MappingUtil {
     static {
         MODEL_MAPPER = new ModelMapper();
 
-//        MODEL_MAPPER.typeMap(User.class, UserRegistrationDto.class).addMappings(mapper -> {
-//            mapper.map(User::getId, MatchRequestDto::setId);
-//            mapper.map(src -> src.getFirstPlayer().getName(), MatchRequestDto::setFirstPlayerName);
-//            mapper.map(src -> src.getSecondPlayer().getName(), MatchRequestDto::setSecondPlayerName);
-//            mapper.map(src -> src.getScore().getSetsScore(), MatchRequestDto::setScore);
-//            mapper.map(src -> src.getWinner().getName(), MatchRequestDto::setWinnerName);
-//        });
-
         MODEL_MAPPER.typeMap(UserRegistrationRequest.class, User.class)
                 .addMapping(UserRegistrationRequest::getLogin, User::setName);
     }
