@@ -22,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String processLogin(@ModelAttribute("userRegistrationDto") UserRegistrationRequest dto) {
+    public String processLogin(@ModelAttribute("userRegistrationRequest") UserRegistrationRequest dto) {
 
         userService.loginUser(dto);
 

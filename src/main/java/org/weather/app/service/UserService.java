@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.weather.app.dto.UserRegistrationRequest;
+import org.weather.app.exception.UsernameAlreadyExistsException;
 import org.weather.app.model.User;
 import org.weather.app.repository.UserRepository;
 import org.weather.app.util.MappingUtil;
@@ -20,6 +21,10 @@ public class UserService {
 
     @Transactional
     public void registerUser(UserRegistrationRequest request) {
+
+        if (userRepository.existsByName(request.getName())) {
+            throw new UsernameAlreadyExistsException("Username already exists");
+        }
 
         String hashedPassword = PasswordEncoder.hashPassword(request.getPassword());
 
