@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.weather.app.dto.UserLoginRequest;
 import org.weather.app.dto.UserRegistrationRequest;
+import org.weather.app.exception.InvalidCredentialsException;
 import org.weather.app.exception.UsernameAlreadyExistsException;
 import org.weather.app.model.User;
 import org.weather.app.repository.UserRepository;
@@ -41,13 +43,21 @@ public class UserService {
 
     }
 
-    public void loginUser(UserRegistrationRequest request) {
+    public void loginUser(UserLoginRequest request) {
 
-        //авторизация пользователя
+        User user = userRepository.getUserByName(request.getName());
 
-        //проверка пользователя в базе
+        if (!userRepository.existsByName(request.getName())) {
+            throw new InvalidCredentialsException("Login or password incorrect");
+        }
+        if (!PasswordEncoder.verifyPassword(request.getPassword(), user.getPassword())) {
+            throw new InvalidCredentialsException("Login or password incorrect");
+        }
 
-        //проверка пароля
+
+        // создать такому пользователю сессию
+        // записать в кукисы идентификатор
+        // отправить на страницу index
 
     }
 

@@ -37,7 +37,7 @@ public class RegistrationController {
         try {
             userService.registerUser(request);
         } catch (UsernameAlreadyExistsException e) {
-            result.rejectValue("name", "user.name.exists");
+            result.reject("user.name.exists");
             return "pages/registration";
         }
 

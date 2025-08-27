@@ -8,6 +8,11 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index() {
+
+        // проверка сессию и куки
+        // если данные верны то страница показывается
+        // если нет, то перебрасывает на логин
+
         return "pages/index";
     }
 }
