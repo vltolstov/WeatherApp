@@ -1,6 +1,8 @@
 package org.weather.app.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.weather.app.dto.UserRegistrationRequest;
@@ -14,6 +16,7 @@ import org.weather.app.util.PasswordEncoder;
 public class UserService {
 
     private final UserRepository userRepository;
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
     public void registerUser(UserRegistrationRequest request) {
@@ -23,7 +26,14 @@ public class UserService {
         User user = MappingUtil.convertToEntity(request);
         user.setPassword(hashedPassword);
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+            log.info("User registered successfully: userId={}, username={}", user.getId(), user.getName());
+        } catch (Exception e) {
+            log.error("User registration failed: username={}, error={}", user.getName(), e.getMessage(), e);
+            throw e;
+        }
+
     }
 
     public void loginUser(UserRegistrationRequest request) {
