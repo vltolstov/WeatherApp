@@ -11,8 +11,6 @@ public class MappingUtil {
     static {
         MODEL_MAPPER = new ModelMapper();
 
-        MODEL_MAPPER.typeMap(UserRegistrationRequest.class, User.class)
-                .addMapping(UserRegistrationRequest::getLogin, User::setName);
     }
 
     public static User convertToEntity(UserRegistrationRequest dto) {

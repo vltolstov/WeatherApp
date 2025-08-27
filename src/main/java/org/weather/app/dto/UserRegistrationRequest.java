@@ -17,13 +17,13 @@ import org.weather.app.validation.PasswordMatches;
 @PasswordMatches
 public class UserRegistrationRequest {
 
-    @NotBlank(message = "{user.login.notBlank}")
-    @Size(min = 3, max = 15, message = "{user.login.size}")
+    @NotBlank(message = "{user.name.notBlank}")
+    @Size(min = 3, max = 15, message = "{user.name.size}")
     @Pattern(
-            regexp = ValidationRegex.LOGIN,
-            message = "{user.login.hasLettersAndDigitsOnly}"
+            regexp = ValidationRegex.NAME,
+            message = "{user.name.hasLettersAndDigitsOnly}"
     )
-    private String login;
+    private String name;
 
     @NotBlank(message = "{user.password.notBlank}")
     private String password;
