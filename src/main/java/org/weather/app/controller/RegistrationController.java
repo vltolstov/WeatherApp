@@ -26,13 +26,13 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String processRegistration(@Valid @ModelAttribute("userRegistrationDto") UserRegistrationRequest userRegistrationDto, BindingResult result) {
+    public String processRegistration(@Valid @ModelAttribute("userRegistrationDto") UserRegistrationRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
             return "pages/registration";
         }
 
-        userService.registerUser(userRegistrationDto);
+        userService.registerUser(request);
 
         return "redirect:/login";
     }
