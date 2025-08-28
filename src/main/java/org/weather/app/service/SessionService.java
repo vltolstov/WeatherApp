@@ -16,11 +16,12 @@ public class SessionService {
 
     private final SessionRepository sessionRepository;
 
-    public void createSession(User user) {
+    public String createSession(User user) {
 
         String token = TokenGenerator.generate();
         Session session = new Session(token, user, LocalDateTime.now().plusMonths(ExpiresDate.SESSION_LIFETIME_MOUNTHS));
         sessionRepository.save(session);
 
+        return token;
     }
 }

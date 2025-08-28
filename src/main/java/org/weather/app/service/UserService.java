@@ -44,7 +44,7 @@ public class UserService {
 
     }
 
-    public void loginUser(UserLoginRequest request) {
+    public String loginUser(UserLoginRequest request) {
 
         User user = userRepository.getUserByName(request.getName());
 
@@ -55,10 +55,7 @@ public class UserService {
             throw new InvalidCredentialsException("Login or password incorrect");
         }
 
-        sessionService.createSession(user);
-        // создать такому пользователю сессию
-        // записать в кукисы идентификатор
-
+        return sessionService.createSession(user);
     }
 
 }
