@@ -19,6 +19,7 @@ import org.weather.app.util.PasswordEncoder;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SessionService sessionService;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
@@ -54,10 +55,9 @@ public class UserService {
             throw new InvalidCredentialsException("Login or password incorrect");
         }
 
-
+        sessionService.createSession(user);
         // создать такому пользователю сессию
         // записать в кукисы идентификатор
-        // отправить на страницу index
 
     }
 

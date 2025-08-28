@@ -24,7 +24,7 @@ public class Session {
 
     @Id
     @Column(length = 64)
-    private long id;
+    private String id;
 
     @OneToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
