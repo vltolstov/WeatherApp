@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.weather.app.constant.AuthCookie;
 import org.weather.app.model.Session;
 import org.weather.app.repository.SessionRepository;
@@ -23,27 +24,48 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        String uri = request.getRequestURI();
         String authToken = "";
 
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookie.getName().equals(AuthCookie.COOKIE_NAME)) {
                     authToken = cookie.getValue();
+                    break;
                 }
             }
         }
 
-        if (authToken.isEmpty()) {
+        Session session = null;
+        if (!authToken.isEmpty()) {
+            session = sessionRepository.findById(authToken);
+        }
+
+        boolean isAuthenticated = session != null && session.getExpiresAt().isAfter(LocalDateTime.now());
+
+        if (isAuthenticated && (uri.equals("/login") || uri.equals("/registration"))) {
+            response.sendRedirect("/");
+            return false;
+        }
+
+        if (!isAuthenticated && !uri.equals("/login") && !uri.equals("/registration")) {
             response.sendRedirect("login");
             return false;
         }
 
-        Session session = sessionRepository.findById(authToken);
-        if (session == null || session.getExpiresAt().isBefore(LocalDateTime.now())) {
-            response.sendRedirect("login");
-            return false;
+        if (isAuthenticated) {
+            request.setAttribute("user", session.getUser());
         }
 
         return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        if (modelAndView != null) {
+            Object user = request.getAttribute("user");
+            modelAndView.addObject("isAuthenticated", user != null);
+            modelAndView.addObject("user", user);
+        }
     }
 }

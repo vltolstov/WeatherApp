@@ -13,9 +13,11 @@
                 </form>
             </div>
 
-            <div class="ms-auto">
-                <a th:href="@{/login}" class="btn btn-primary">Войти</a>
-                <a th:href="@{/logout}" class="btn btn-primary">Выйти</a>
+            <div class="ms-auto" th:if="${isAuthenticated}">
+                <a th:href="@{/logout}" class="btn btn-primary">Выход</a>
+            </div>
+            <div class="ms-auto" th:unless="${isAuthenticated}">
+                <a th:href="@{/login}" class="btn btn-primary">Вход</a>
                 <a th:href="@{/registration}" class="btn btn-outline-secondary ms-2">Регистрация</a>
             </div>
 
