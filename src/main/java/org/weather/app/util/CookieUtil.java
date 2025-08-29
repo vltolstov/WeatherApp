@@ -15,10 +15,6 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
-    public static void getAuthCookie() {
-        //получение куков
-    }
-
     public static void clearCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie(AuthCookie.COOKIE_NAME, "");
         cookie.setPath("/");
