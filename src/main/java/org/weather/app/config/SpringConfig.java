@@ -20,12 +20,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
+import org.weather.app.repository.SessionRepository;
+import org.weather.app.service.UserService;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -38,7 +41,8 @@ import java.util.Properties;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
-    private final ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Value("${spring.datasource.url}")
     private String dbUrl;
@@ -88,51 +92,17 @@ public class SpringConfig implements WebMvcConfigurer {
     @Value("${spring.flyway.locations}")
     private String flywayLocations;
 
-    @Autowired
-    public SpringConfig(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-    @Bean
-    public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix(prefix);
-        templateResolver.setSuffix(suffix);
-        templateResolver.setTemplateMode(mode);
-        templateResolver.setCharacterEncoding(encoding);
-        return templateResolver;
-    }
-
-    @Bean
-    public SpringTemplateEngine templateEngine() {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.addDialect(new nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect());
-        templateEngine.setEnableSpringELCompiler(true);
-        return templateEngine;
-    }
-
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding(encoding);
-        viewResolver.setContentType(contentType);
-        registry.viewResolver(viewResolver);
-    }
-
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(dbDriver);
-        dataSource.setUrl(dbUrl);
-        dataSource.setUsername(dbUsername);
-        dataSource.setPassword(dbPassword);
-        return dataSource;
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName(dbDriver);
+        ds.setUrl(dbUrl);
+        ds.setUsername(dbUsername);
+        ds.setPassword(dbPassword);
+        return ds;
     }
 
-    @Bean
+    @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
@@ -145,8 +115,8 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("hibernate.show_sql", showSql);
         props.put("hibernate.format_sql", formatSql);
         props.put("hibernate.default_schema", schema);
-
         emf.setJpaProperties(props);
+
         return emf;
     }
 
@@ -167,18 +137,58 @@ public class SpringConfig implements WebMvcConfigurer {
         return flyway;
     }
 
+    @Bean
+    public AuthInterceptor authInterceptor(SessionRepository sessionRepository, UserService userService) {
+        return new org.weather.app.config.AuthInterceptor(sessionRepository, userService);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor(null, null))
+                .addPathPatterns("/**")
+                .excludePathPatterns("/login", "/registration");
+    }
+
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(applicationContext);
+        resolver.setPrefix(prefix);
+        resolver.setSuffix(suffix);
+        resolver.setTemplateMode(mode);
+        resolver.setCharacterEncoding(encoding);
+        return resolver;
+    }
+
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setTemplateResolver(templateResolver());
+        engine.addDialect(new nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect());
+        engine.setEnableSpringELCompiler(true);
+        return engine;
+    }
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine());
+        resolver.setCharacterEncoding(encoding);
+        resolver.setContentType(contentType);
+        registry.viewResolver(resolver);
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
     @Bean
     public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("ValidationMessages");
-        messageSource.setDefaultEncoding("UTF-8");
-        return messageSource;
+        ResourceBundleMessageSource msg = new ResourceBundleMessageSource();
+        msg.setBasename("ValidationMessages");
+        msg.setDefaultEncoding("UTF-8");
+        return msg;
     }
 
     @Bean
