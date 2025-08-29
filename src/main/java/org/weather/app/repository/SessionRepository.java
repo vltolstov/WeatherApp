@@ -6,4 +6,7 @@ import org.weather.app.model.Session;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
+
+    Session findById(String sessionToken);
+
 }

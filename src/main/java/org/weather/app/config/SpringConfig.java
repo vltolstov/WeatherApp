@@ -28,7 +28,6 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import org.weather.app.repository.SessionRepository;
-import org.weather.app.service.UserService;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -138,13 +137,13 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public AuthInterceptor authInterceptor(SessionRepository sessionRepository, UserService userService) {
-        return new org.weather.app.config.AuthInterceptor(sessionRepository, userService);
+    public AuthInterceptor authInterceptor(SessionRepository sessionRepository) {
+        return new AuthInterceptor(sessionRepository);
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor(null, null))
+        registry.addInterceptor(authInterceptor(null))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login", "/registration");
     }
