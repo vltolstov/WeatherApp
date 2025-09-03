@@ -16,11 +16,11 @@ import org.weather.app.util.PasswordEncoder;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final SessionService sessionService;
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     @Transactional
     public void registerUser(UserRegistrationRequest request) {

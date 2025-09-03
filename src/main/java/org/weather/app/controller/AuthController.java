@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.weather.app.dto.UserLoginRequest;
 import org.weather.app.exception.InvalidCredentialsException;
-import org.weather.app.service.UserService;
+import org.weather.app.service.AuthService;
 import org.weather.app.util.CookieUtil;
 
 @Controller
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AuthService authService) {
+        this.userService = authService;
     }
 
     @GetMapping("/login")

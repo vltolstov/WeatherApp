@@ -91,6 +91,9 @@ public class SpringConfig implements WebMvcConfigurer {
     @Value("${spring.flyway.locations}")
     private String flywayLocations;
 
+    @Value("${spring.flyway.cleanDisabled}")
+    private boolean cleanDisabled;
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -102,7 +105,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean(name = "entityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, @Autowired(required = false) Properties jpaProperties) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
         emf.setPackagesToScan(packagesToScan);
@@ -129,6 +132,7 @@ public class SpringConfig implements WebMvcConfigurer {
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
                 .createSchemas(true)
+                .cleanDisabled(cleanDisabled)
                 .schemas(schema)
                 .locations(flywayLocations)
                 .load();
@@ -179,7 +183,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("//**").addResourceLocations("//");
     }
 
     @Bean

@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.weather.app.dto.UserRegistrationRequest;
 import org.weather.app.exception.UsernameAlreadyExistsException;
-import org.weather.app.service.UserService;
+import org.weather.app.service.AuthService;
 
 @Controller
 public class RegistrationController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public RegistrationController(UserService userService, MessageSource messageSource) {
-        this.userService = userService;
+    public RegistrationController(AuthService authService, MessageSource messageSource) {
+        this.authService = authService;
     }
 
     @GetMapping("/registration")
@@ -35,7 +35,7 @@ public class RegistrationController {
         }
 
         try {
-            userService.registerUser(request);
+            authService.registerUser(request);
         } catch (UsernameAlreadyExistsException e) {
             result.reject("user.name.exists");
             return "pages/registration";
