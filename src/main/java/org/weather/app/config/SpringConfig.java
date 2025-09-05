@@ -17,6 +17,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -38,6 +39,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "org.weather.app.repository")
 @PropertySource("classpath:application.properties")
 @EnableWebMvc
+@EnableScheduling
 public class SpringConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -149,7 +151,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor(null))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login", "/registration");
+                .excludePathPatterns("/login", "/registration", "/resources/**");
     }
 
     @Bean
@@ -183,7 +185,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("//**").addResourceLocations("//");
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
     @Bean
