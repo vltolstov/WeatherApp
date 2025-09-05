@@ -14,6 +14,8 @@ import org.weather.app.repository.UserRepository;
 import org.weather.app.util.MappingUtil;
 import org.weather.app.util.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,6 +23,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final SessionService sessionService;
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+    private final static int SESSION_EXPIRE_TIME = 60 * 60 * 24;
 
     @Transactional
     public void registerUser(UserRegistrationRequest request) {
@@ -55,7 +58,7 @@ public class AuthService {
             throw new InvalidCredentialsException("Login or password incorrect");
         }
 
-        return sessionService.createSession(user);
+        return sessionService.createSession(user, LocalDateTime.now().plusSeconds(SESSION_EXPIRE_TIME));
     }
 
 }
