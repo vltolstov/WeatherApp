@@ -10,7 +10,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.weather.app.constant.AuthCookie;
 import org.weather.app.controller.AuthController;
-import org.weather.app.exception.SessionNotFoundException;
 import org.weather.app.model.Session;
 import org.weather.app.repository.SessionRepository;
 
@@ -43,12 +42,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         Session session = null;
         if (!authToken.isEmpty()) {
-            session = sessionRepository.findById(authToken).orElseThrow(() -> {
-                log.error("Session not found");
-                return new SessionNotFoundException("Session not found");
-            });
+            session = sessionRepository.findById(authToken).orElse(null);
         }
-        ;
 
         boolean isAuthenticated = session != null && session.getExpiresAt().isAfter(LocalDateTime.now());
 
