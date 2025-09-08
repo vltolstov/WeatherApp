@@ -16,14 +16,13 @@ import org.weather.app.dto.UserLoginRequest;
 import org.weather.app.dto.UserRegistrationRequest;
 import org.weather.app.exception.InvalidCredentialsException;
 import org.weather.app.exception.UsernameAlreadyExistsException;
+import org.weather.app.model.Session;
 import org.weather.app.model.User;
 import org.weather.app.repository.SessionRepository;
 import org.weather.app.repository.UserRepository;
 import org.weather.app.service.AuthService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.time.LocalDateTime;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
@@ -60,8 +59,8 @@ public class AuthServiceIT {
 
         User savedUser = userRepository.getUserByName("testName");
 
-        assertNotNull(savedUser);
-        assertEquals("testName", savedUser.getName());
+        Assertions.assertNotNull(savedUser);
+        Assertions.assertEquals("testName", savedUser.getName());
     }
 
     @Test
@@ -73,7 +72,7 @@ public class AuthServiceIT {
 
         authService.registerUser(userRegistrationRequest);
 
-        assertThrows(UsernameAlreadyExistsException.class, () -> authService.registerUser(userRegistrationRequest));
+        Assertions.assertThrows(UsernameAlreadyExistsException.class, () -> authService.registerUser(userRegistrationRequest));
     }
 
     @Test
@@ -93,8 +92,12 @@ public class AuthServiceIT {
         userLoginRequest.setPassword(password);
 
         String authToken = authService.loginUser(userLoginRequest);
-        assertEquals(username, sessionRepository.findById(authToken).getUser().getName());
+        Session session = sessionRepository.findById(authToken).get();
+        Assertions.assertEquals(username, session.getUser().getName());
     }
+
+    //тест
+    //зарегаться, залогиниться, проверить истекшую сессию
 
     @Test
     @DisplayName("Запрет входа по неправильному логину")
@@ -133,5 +136,45 @@ public class AuthServiceIT {
         userLoginRequest.setPassword(invalidPassword);
 
         Assertions.assertThrows(InvalidCredentialsException.class, () -> authService.loginUser(userLoginRequest));
+    }
+
+    @Test
+    @DisplayName("Создание сессии при входе")
+    public void createSession() {
+        String userName = "testName";
+        String password = "password";
+
+        UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
+        userRegistrationRequest.setName(userName);
+        userRegistrationRequest.setPassword(password);
+        authService.registerUser(userRegistrationRequest);
+
+        UserLoginRequest userLoginRequest = new UserLoginRequest();
+        userLoginRequest.setName(userName);
+        userLoginRequest.setPassword(password);
+
+        String authToken = authService.loginUser(userLoginRequest);
+
+        Assertions.assertNotNull(sessionRepository.findById(authToken));
+    }
+
+    @Test
+    @DisplayName("Период сессии при авторизации корректен")
+    public void verifySessionExpiresDate() {
+        String userName = "testName";
+        String password = "password";
+        UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
+        userRegistrationRequest.setName(userName);
+        userRegistrationRequest.setPassword(password);
+        authService.registerUser(userRegistrationRequest);
+
+        UserLoginRequest userLoginRequest = new UserLoginRequest();
+        userLoginRequest.setName(userName);
+        userLoginRequest.setPassword(password);
+        String authToken = authService.loginUser(userLoginRequest);
+
+        Session session = sessionRepository.findById(authToken).get();
+
+        Assertions.assertTrue(session.getExpiresAt().isAfter(LocalDateTime.now()));
     }
 }
