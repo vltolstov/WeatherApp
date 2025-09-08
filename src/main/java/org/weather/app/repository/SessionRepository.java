@@ -5,11 +5,12 @@ import org.springframework.stereotype.Repository;
 import org.weather.app.model.Session;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
-    Session findById(String sessionToken);
+    Optional<Session> findById(String sessionToken);
 
     void deleteByExpiresAtBefore(LocalDateTime dateTime);
 }
