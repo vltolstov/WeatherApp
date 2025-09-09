@@ -3,13 +3,10 @@ package org.weather.app.config;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.weather.app.constant.AuthCookie;
-import org.weather.app.controller.AuthController;
 import org.weather.app.model.Session;
 import org.weather.app.repository.SessionRepository;
 
@@ -19,7 +16,6 @@ import java.time.LocalDateTime;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final SessionRepository sessionRepository;
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     public AuthInterceptor(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;

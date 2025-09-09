@@ -22,7 +22,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final SessionService sessionService;
-    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
     private final static int SESSION_EXPIRE_TIME = 60 * 60 * 24;
 
     @Transactional
@@ -39,9 +39,9 @@ public class AuthService {
 
         try {
             userRepository.save(user);
-            log.info("User registered successfully: userId={}, username={}", user.getId(), user.getName());
+            LOG.info("User registered successfully: userId={}, username={}", user.getId(), user.getName());
         } catch (Exception e) {
-            log.error("User registration failed: username={}, error={}", user.getName(), e.getMessage(), e);
+            LOG.error("User registration failed: username={}, error={}", user.getName(), e.getMessage(), e);
             throw e;
         }
 
