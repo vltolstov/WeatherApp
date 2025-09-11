@@ -6,7 +6,7 @@
 и заполнить необходимые поля
 
 ```
-weather.api.token=
+weather.api.key=
 app.schema=main
 spring.datasource.url=jdbc:postgresql://localhost:5432/weather-app
 spring.datasource.username=

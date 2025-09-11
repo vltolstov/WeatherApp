@@ -2,6 +2,7 @@ package org.weather.app.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,13 +16,15 @@ import reactor.core.publisher.Mono;
 public class WeatherService {
 
     private final WebClient webClient;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    private static final String API_KEY = " ";
+    private String apiKey;
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
-    public WeatherService(WebClient webClient) {
+    public WeatherService(WebClient webClient, ObjectMapper objectMapper, @Value("${weather.api.key}") String apiKey) {
         this.webClient = webClient;
+        this.objectMapper = objectMapper;
+        this.apiKey = apiKey;
     }
 
     public WeatherResponseDto getWeatherByCity(String city) {
@@ -36,7 +39,7 @@ public class WeatherService {
                 .queryParam("lon", longitude)
                 .queryParam("lang", "ru")
                 .queryParam("units", "metric")
-                .queryParam("appid", API_KEY)
+                .queryParam("appid", apiKey)
                 .toUriString();
         String response = fetchResponse(url);
         return parseWeatherResponse(response);
@@ -47,7 +50,7 @@ public class WeatherService {
                 .queryParam(param, value)
                 .queryParam("lang", "ru")
                 .queryParam("units", "metric")
-                .queryParam("appid", API_KEY)
+                .queryParam("appid", apiKey)
                 .toUriString();
     }
 

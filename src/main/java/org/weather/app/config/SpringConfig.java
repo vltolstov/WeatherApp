@@ -1,5 +1,6 @@
 package org.weather.app.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManagerFactory;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,5 +206,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public WebClient webClient() {
         return WebClient.builder().build();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
