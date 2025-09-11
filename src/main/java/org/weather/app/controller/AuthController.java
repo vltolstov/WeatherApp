@@ -44,7 +44,7 @@ public class AuthController {
         }
 
         CookieUtil.addCookie(response, authToken);
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
