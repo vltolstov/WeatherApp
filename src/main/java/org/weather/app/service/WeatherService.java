@@ -18,7 +18,7 @@ public class WeatherService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String API_KEY = " ";
-    private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather?";
+    private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
     public WeatherService(WebClient webClient) {
         this.webClient = webClient;
