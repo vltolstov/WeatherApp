@@ -1,4 +1,4 @@
-package org.weather.app;
+package org.weather.app.integration;
 
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Assertions;
