@@ -2,22 +2,30 @@ package org.weather.app.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
 public class WeatherResponseDto {
 
     private int id;
 
     private String name;
 
-    @JsonProperty("Coord")
+    @JsonProperty("coord")
     private Coordinate coordinate;
 
-    private Weather weather;
+    private List<Weather> weather;
 
     private Main main;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @Setter
     public static class Coordinate {
         @JsonProperty("lon")
         private double longitude;
@@ -26,15 +34,19 @@ public class WeatherResponseDto {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @Setter
     public static class Weather {
         private String description;
         private String icon;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @Setter
     public static class Main {
-        String temp;
+        double temp;
         @JsonProperty("feels_like")
-        String feelsLike;
+        double feelsLike;
     }
 }
