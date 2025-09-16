@@ -50,7 +50,7 @@ public class SessionServiceIT {
 
     @Test
     @DisplayName("Успешное создание сессии")
-    public void createSession() {
+    public void testCreateSession() {
         String userName = "testName";
         String password = "password";
 
@@ -67,7 +67,7 @@ public class SessionServiceIT {
 
     @Test
     @DisplayName("Удаление истекшей сессии")
-    public void deleteExpiredSession() {
+    public void testDeleteExpiredSession() {
         String userName = "testName";
         String password = "password";
         UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();

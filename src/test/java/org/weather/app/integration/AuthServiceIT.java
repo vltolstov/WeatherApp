@@ -50,7 +50,7 @@ public class AuthServiceIT {
 
     @Test
     @DisplayName("Регистрация пользователя: имя - testName, пароль - password")
-    public void registerUser() {
+    public void testRegisterUser() {
         UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
         userRegistrationRequest.setName("testName");
         userRegistrationRequest.setPassword("password");
@@ -65,7 +65,7 @@ public class AuthServiceIT {
 
     @Test
     @DisplayName("Запрет регистрации двух одинаковых пользователей: имя - testName, пароль password")
-    public void registerAlreadyExistsUser() {
+    public void testRegisterAlreadyExistsUser() {
         UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
         userRegistrationRequest.setName("testName");
         userRegistrationRequest.setPassword("password");
@@ -77,7 +77,7 @@ public class AuthServiceIT {
 
     @Test
     @DisplayName("Успешный вход пользователя с данными: имя - testName, пароль password")
-    public void loginUser() {
+    public void testLoginUser() {
         String username = "testName";
         String password = "password";
 
@@ -96,12 +96,9 @@ public class AuthServiceIT {
         Assertions.assertEquals(username, session.getUser().getName());
     }
 
-    //тест
-    //зарегаться, залогиниться, проверить истекшую сессию
-
     @Test
     @DisplayName("Запрет входа по неправильному логину")
-    public void loginInvalidUserName() {
+    public void testLoginInvalidUserName() {
         String username = "testName";
         String password = "password";
         String invalidUserName = "invalidUserName";
@@ -121,7 +118,7 @@ public class AuthServiceIT {
 
     @Test
     @DisplayName("Запрет входа по неправильному паролю")
-    public void loginInvalidPassword() {
+    public void testLoginInvalidPassword() {
         String username = "testName";
         String password = "password";
         String invalidPassword = "invalidPassword";
@@ -140,7 +137,7 @@ public class AuthServiceIT {
 
     @Test
     @DisplayName("Создание сессии при входе")
-    public void createSession() {
+    public void testCreateSession() {
         String userName = "testName";
         String password = "password";
 
@@ -160,7 +157,7 @@ public class AuthServiceIT {
 
     @Test
     @DisplayName("Период сессии при авторизации корректен")
-    public void verifySessionExpiresDate() {
+    public void testVerifySessionExpiresDate() {
         String userName = "testName";
         String password = "password";
         UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
