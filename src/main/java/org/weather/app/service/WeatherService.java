@@ -33,7 +33,7 @@ public class WeatherService {
         return parseWeatherResponse(response);
     }
 
-    public WeatherResponseDto getWeatherByCoordinates(String latitude, String longitude) {
+    public WeatherResponseDto getWeatherByCoordinates(Double latitude, Double longitude) {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("lat", latitude)
                 .queryParam("lon", longitude)
