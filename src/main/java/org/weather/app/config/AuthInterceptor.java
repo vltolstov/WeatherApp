@@ -44,7 +44,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         boolean isAuthenticated = session != null && session.getExpiresAt().isAfter(LocalDateTime.now());
 
         if (isAuthenticated && (uri.equals("/login") || uri.equals("/registration"))) {
-            response.sendRedirect("index");
+            response.sendRedirect(request.getContextPath() + "/");
             return false;
         }
 

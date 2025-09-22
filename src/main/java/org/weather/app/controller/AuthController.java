@@ -1,5 +1,6 @@
 package org.weather.app.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.weather.app.dto.UserLoginRequest;
 import org.weather.app.exception.InvalidCredentialsException;
 import org.weather.app.service.AuthService;
 import org.weather.app.util.CookieUtil;
+
+import java.io.IOException;
 
 @Controller
 public class AuthController {
@@ -29,22 +32,25 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String processLogin(@Valid @ModelAttribute("userLoginRequest") UserLoginRequest request, BindingResult result, HttpServletResponse response) {
+    public void processLogin(@Valid @ModelAttribute("userLoginRequest") UserLoginRequest loginRequest,
+                             BindingResult result,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws IOException {
 
         if (result.hasErrors()) {
-            return "pages/login";
+            response.sendRedirect(request.getContextPath() + "/login");
         }
 
-        String authToken;
+        String authToken = "";
         try {
-            authToken = userService.loginUser(request);
+            authToken = userService.loginUser(loginRequest);
         } catch (InvalidCredentialsException e) {
             result.reject("login.invalid.message");
-            return "pages/login";
+            response.sendRedirect(request.getContextPath() + "/login");
         }
 
         CookieUtil.addCookie(response, authToken);
-        return "redirect:/";
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @GetMapping("/logout")
