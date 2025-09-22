@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}">
+<head>
+    <title>Результаты поиска</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div th:if="${#fields.hasErrors('*')}">
+        <ul class="list-unstyled text-danger small">
+            <li class="mb-1" th:each="err : ${#fields.errors('*')}" th:text="'- ' + ${err}"></li>
+        </ul>
+    </div>
+
+    <p>тут что-то найдено или нет</p>
+</section>
+
+</body>
+</html>
