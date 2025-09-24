@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class SearchRequest {
 
-    @NotBlank(message = "search.input.notBlank")
+    @NotBlank(message = "{search.input.notBlank}")
     private String query;
 
 }
