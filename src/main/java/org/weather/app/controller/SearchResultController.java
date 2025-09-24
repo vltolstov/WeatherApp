@@ -9,9 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.weather.app.dto.SearchRequest;
+import org.weather.app.service.CityService;
 
 @Controller
 public class SearchResultController {
+
+    private final CityService cityService;
+
+    public SearchResultController(CityService cityService) {
+        this.cityService = cityService;
+    }
 
     @GetMapping("/search-result")
     public String searchResult(Model model) {
@@ -20,13 +27,21 @@ public class SearchResultController {
     }
 
     @PostMapping("/search-result")
-    public String searchProcess(@Valid @ModelAttribute("searchRequest") SearchRequest searchRequest, BindingResult result, HttpServletResponse response) {
+    public String searchProcess(@Valid @ModelAttribute("searchRequest") SearchRequest searchRequest,
+                                BindingResult result,
+                                Model model,
+                                HttpServletResponse response) {
 
         if (result.hasErrors()) {
             return "pages/search-result";
         }
 
-        // если ошибок нет... то
+        if (cityService.isCityNotExist(searchRequest.getQuery())) {
+            model.addAttribute("cityNotFound", "Город с таким названием не найден");
+            return "pages/search-result";
+        }
+
+        // передать в шаблон найденные города
 
         return "pages/search-result";
     }
