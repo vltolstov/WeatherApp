@@ -6,9 +6,9 @@
                 <a href="/" class="navbar-brand fw-bold">Weather-App</a>
             </div>
 
-            <div class="mx-auto" style="max-width: 400px; flex:1;">
+            <div class="mx-auto" style="max-width: 400px; flex:1;" th:object="${searchRequest}">
                 <form class="d-flex" th:if="${isAuthenticated}" th:method="POST" th:action="@{/search-result}"
-                      th:object="${searchRequest}">
+                >
                     <input class="form-control me-2" type="search"
                            placeholder="Введите название города или координаты в формате ХХ.ХХХХ ХХ.ХХХХ"
                            aria-label="Search"
@@ -16,6 +16,11 @@
                            required>
                     <button class="btn btn-outline-primary" type="submit">Найти</button>
                 </form>
+                <div th:if="${#fields.hasErrors('*')}">
+                    <ul class="list-unstyled text-danger small">
+                        <li class="mb-1" th:each="err : ${#fields.errors('*')}" th:text="'- ' + ${err}"></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="ms-auto" th:if="${isAuthenticated}">

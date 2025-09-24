@@ -1,0 +1,70 @@
+[
+  {
+    "id": 14256,
+    "coord": {
+      "lon": 48.570728,
+      "lat": 34.790878
+    },
+    "country": "IR",
+    "geoname": {
+      "cl": "P",
+      "code": "PPL",
+      "parent": 132142
+    },
+    "langs": [
+      {
+        "de": "Azad Shahr"
+      },
+      {
+        "fa": "آزادشهر"
+      }
+    ],
+    "name": "Azadshahr",
+    "stat": {
+      "level": 1.0,
+      "population": 514102
+    },
+    "stations": [
+      {
+        "id": 7030,
+        "dist": 9,
+        "kf": 1
+      }
+    ],
+    "zoom": 10
+  },
+  {
+    "id": 18918,
+    "coord": {
+      "lon": 34.058331,
+      "lat": 35.012501
+    },
+    "country": "CY",
+    "geoname": {
+      "cl": "P",
+      "code": "PPL",
+      "parent": 146615
+    },
+    "langs": [
+      {
+        "en": "Protaras"
+      },
+      {
+        "ru": "Протарас"
+      }
+    ],
+    "name": "Protaras",
+    "stat": {
+      "level": 1.0,
+      "population": 20230
+    },
+    "stations": [
+      {
+        "id": 5448,
+        "dist": 42,
+        "kf": 1
+      }
+    ],
+    "zoom": 6
+  }
+]
