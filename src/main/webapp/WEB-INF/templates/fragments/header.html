@@ -7,19 +7,20 @@
             </div>
 
             <div class="mx-auto" style="max-width: 400px; flex:1;" th:object="${searchRequest}">
-                <form class="d-flex" th:if="${isAuthenticated}" th:method="POST" th:action="@{/search-result}"
-                >
-                    <input class="form-control me-2" type="search"
-                           placeholder="Введите название города или координаты в формате ХХ.ХХХХ ХХ.ХХХХ"
-                           aria-label="Search"
-                           th:field="*{query}"
-                           required>
-                    <button class="btn btn-outline-primary" type="submit">Найти</button>
-                </form>
-                <div th:if="${#fields.hasErrors('*')}">
-                    <ul class="list-unstyled text-danger small">
-                        <li class="mb-1" th:each="err : ${#fields.errors('*')}" th:text="'- ' + ${err}"></li>
-                    </ul>
+                <div th:if="${isAuthenticated}">
+                    <form class="d-flex" th:method="POST" th:action="@{/search-result}">
+                        <input class="form-control me-2" type="search"
+                               placeholder="Введите название города или координаты в формате ХХ.ХХХХ ХХ.ХХХХ"
+                               aria-label="Search"
+                               th:field="*{query}"
+                               required>
+                        <button class="btn btn-outline-primary" type="submit">Найти</button>
+                    </form>
+                    <div th:if="${#fields.hasErrors('*')}">
+                        <ul class="list-unstyled text-danger small">
+                            <li class="mb-1" th:each="err : ${#fields.errors('*')}" th:text="'- ' + ${err}"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
