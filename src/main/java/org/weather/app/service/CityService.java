@@ -10,6 +10,7 @@ import org.weather.app.dto.CityDto;
 import org.weather.app.exception.CityJsonProcessingException;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +35,7 @@ public class CityService {
             });
             this.citiesByName = cities.stream()
                     .collect(Collectors.groupingBy(
-                            city -> city.getLangs() != null
-                                    ? city.getLangs().stream()
-                                    .filter(m -> m.containsKey("ru"))
-                                    .map(m -> m.get("ru"))
-                                    .findFirst()
-                                    .orElse(city.getName())
-                                    : city.getName(),
+                            city -> city.getName().toLowerCase(),
                             HashMap::new,
                             Collectors.toList()
                     ));
@@ -49,11 +44,13 @@ public class CityService {
         }
     }
 
-    public Map<String, List<CityDto>> getCities() {
-        return citiesByName;
+    public List<CityDto> getCities(String cityName) {
+        System.out.println(cityName.toLowerCase());
+        List<CityDto> cities = citiesByName.get(cityName.toLowerCase());
+        return cities != null ? cities : Collections.emptyList();
     }
 
     public boolean isCityExist(String cityName) {
-        return citiesByName.containsKey(cityName);
+        return citiesByName.containsKey(cityName.toLowerCase());
     }
 }
