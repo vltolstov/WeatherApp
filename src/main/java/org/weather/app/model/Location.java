@@ -35,9 +35,8 @@ public class Location {
     private User user;
 
     @Column(nullable = false)
-    private BigDecimal latitude;
-
-    @Column(nullable = false)
     private BigDecimal longitude;
 
+    @Column(nullable = false)
+    private BigDecimal latitude;
 }

@@ -8,7 +8,7 @@
 
             <div class="mx-auto" style="max-width: 400px; flex:1;" th:object="${searchRequest}">
                 <div th:if="${isAuthenticated}">
-                    <form class="d-flex" th:method="POST" th:action="@{/search-result}">
+                    <form class="d-flex" th:method="POST" th:action="@{/search}">
                         <input class="form-control me-2" type="search"
                                placeholder="Введите название города или координаты в формате ХХ.ХХХХ ХХ.ХХХХ"
                                aria-label="Search"

@@ -25,11 +25,10 @@ public class CityDto {
     @Getter
     @Setter
     public static class CoordDto {
+        @JsonProperty("lon")
+        private Double longitude;
 
         @JsonProperty("lat")
         private Double latitude;
-
-        @JsonProperty("lon")
-        private Double longitude;
     }
 }

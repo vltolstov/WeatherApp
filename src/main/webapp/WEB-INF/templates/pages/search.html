@@ -7,11 +7,16 @@
 </head>
 <body>
 
-<section layout:fragment="content">
+<se1ction layout:fragment="content">
     <div th:if="${cityNotFound}" th:text="${cityNotFound}"></div>
 
-    // тут список городов
-</section>
+    <ul>
+        <li th:each="city : ${cities}">
+            <span th:text="${city.name}"></span> (<span th:text="${city.country}"></span>)
+        </li>
+    </ul>
+
+</se1ction>
 
 </body>
 </html>

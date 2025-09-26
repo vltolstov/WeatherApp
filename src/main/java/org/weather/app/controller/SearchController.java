@@ -9,39 +9,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.weather.app.dto.SearchRequest;
-import org.weather.app.service.CityService;
+import org.weather.app.service.SearchService;
 
 @Controller
-public class SearchResultController {
+public class SearchController {
 
-    private final CityService cityService;
+    private final SearchService searchService;
 
-    public SearchResultController(CityService cityService) {
-        this.cityService = cityService;
+    public SearchController(SearchService searchService) {
+        this.searchService = searchService;
     }
 
-    @GetMapping("/search-result")
+    @GetMapping("/search")
     public String searchResult(Model model) {
         model.addAttribute("searchRequest", new SearchRequest());
-        return "pages/search-result";
+        return "pages/search";
     }
 
-    @PostMapping("/search-result")
+    @PostMapping("/search")
     public String searchProcess(@Valid @ModelAttribute("searchRequest") SearchRequest searchRequest,
                                 BindingResult result,
                                 Model model,
                                 HttpServletResponse response) {
 
         if (result.hasErrors()) {
-            return "pages/search-result";
+            return "pages/search";
         }
 
-        if (cityService.isCityExist(searchRequest.getQuery())) {
-            // передать в шаблон найденные города
-            return "pages/search-result";
+        if (searchService.isLocationExist(searchRequest.getQuery())) {
+            model.addAttribute("cities", searchService.getLocations(searchRequest.getQuery()));
+            return "pages/search";
         }
 
         model.addAttribute("cityNotFound", "Город с таким названием не найден");
-        return "pages/search-result";
+        return "pages/search";
     }
 }
