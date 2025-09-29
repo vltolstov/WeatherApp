@@ -13,6 +13,8 @@ import java.util.Map;
 @Setter
 public class CityDto {
 
+    private Integer id;
+
     private String name;
 
     private String country;
