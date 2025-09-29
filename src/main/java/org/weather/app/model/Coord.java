@@ -1,4 +1,6 @@
 package org.weather.app.model;
 
-public record Coord(double longitude, double latitude) {
+import java.math.BigDecimal;
+
+public record Coord(BigDecimal longitude, BigDecimal latitude) {
 }

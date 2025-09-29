@@ -11,6 +11,7 @@ import org.weather.app.exception.CityJsonProcessingException;
 import org.weather.app.model.Coord;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -59,8 +60,8 @@ public class SearchService {
     private Optional<Coord> parseCoordinates(String query) {
         Matcher matcher = COORD_PATTERN.matcher(query.trim());
         if (matcher.matches()) {
-            double longitude = Double.parseDouble(matcher.group(1));
-            double latitude = Double.parseDouble(matcher.group(2));
+            BigDecimal longitude = new BigDecimal(matcher.group(1));
+            BigDecimal latitude = new BigDecimal(matcher.group(2));
             return Optional.of(new Coord(longitude, latitude));
         }
         return Optional.empty();
@@ -78,7 +79,7 @@ public class SearchService {
                 .orElseGet(() -> searchByCity(query));
     }
 
-    public List<CityDto> searchByCoordinates(Double longitude, Double latitude) {
+    public List<CityDto> searchByCoordinates(BigDecimal longitude, BigDecimal latitude) {
         return citiesByCoordinates.getOrDefault(new Coord(longitude, latitude), Collections.emptyList());
     }
 
