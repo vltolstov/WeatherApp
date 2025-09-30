@@ -2,14 +2,20 @@ document.querySelectorAll('.add-city-form').forEach(form => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const cityId = form.dataset.cityId;
+        const cityName = form.dataset.cityName;
+        const cityLongitude = parseFloat(form.dataset.cityLongitude);
+        const cityLatitude = parseFloat(form.dataset.cityLatitude);
         const errorMessage = form.querySelector('.error-message');
 
         try {
             const response = await fetch('/locations/add', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({cityId})
+                body: JSON.stringify({
+                    name: cityName,
+                    longitude: cityLongitude,
+                    latitude: cityLatitude
+                })
             });
             const result = await response.json();
 

@@ -12,7 +12,9 @@
 
     <ul>
         <li th:each="city : ${cities}">
-            <form class="add-city-form" th:data-city-id="${city.id}">
+            <form class="add-city-form" th:data-city-name="${city.name}"
+                  th:data-city-longitude="${city.coord.getLongitude()}"
+                  th:data-city-latitude="${city.coord.getLatitude()}">
                 <span th:text="${city.name}"></span> (<span th:text="${city.country}"></span>)
                 <button type="submit" class="btn btn-primary">Добавить</button>
                 <span class="error-message"></span>
