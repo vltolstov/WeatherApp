@@ -8,7 +8,7 @@ document.querySelectorAll('.add-city-form').forEach(form => {
         const errorMessage = form.querySelector('.error-message');
 
         try {
-            const response = await fetch('/locations/add', {
+            const response = await fetch(form.action, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -20,10 +20,10 @@ document.querySelectorAll('.add-city-form').forEach(form => {
             const result = await response.json();
 
             if (result.success) {
-                errorMessage.textContent = 'Добавлено!';
+                errorMessage.textContent = result.message;
                 errorMessage.style.color = 'green';
             } else {
-                errorMessage.textContent = result.error;
+                errorMessage.textContent = result.message;
                 errorMessage.style.color = 'red';
             }
         } catch (err) {
