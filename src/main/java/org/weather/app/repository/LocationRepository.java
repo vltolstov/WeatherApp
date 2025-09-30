@@ -12,10 +12,10 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     List<Location> findByUser(User user);
 
-    long deleteByUserAndLatitudeAndLongitude(User user, BigDecimal longitud, BigDecimal latitude);
+    long deleteByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
 
-    boolean existsByUserAndLatitudeAndLongitude(User user, BigDecimal longitude, BigDecimal latitude);
+    boolean existsByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
 
-    Optional<Location> findByUserAndLatitudeAndLongitude(User user, BigDecimal longitude, BigDecimal latitude);
+    Optional<Location> findByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
 
 }

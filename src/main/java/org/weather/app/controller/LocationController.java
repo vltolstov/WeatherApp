@@ -26,7 +26,7 @@ public class LocationController {
 
         User user = (User) httpServletRequest.getAttribute("user");
 
-        boolean exists = locationRepository.existsByUserAndLatitudeAndLongitude(user, addLocationRequest.longitude(), addLocationRequest.latitude());
+        boolean exists = locationRepository.existsByUserAndLongitudeAndLatitude(user, addLocationRequest.longitude(), addLocationRequest.latitude());
 
         if (exists) {
             return new AddLocationResponse(false, "Город уже добавлен");
@@ -39,10 +39,10 @@ public class LocationController {
         location.setLongitude(addLocationRequest.longitude());
         locationRepository.save(location);
 
-        return new AddLocationResponse(true, "Что-то добавили");
+        return new AddLocationResponse(true, "Добавлен");
 
     }
-    
+
     @PostMapping("/delete")
     public void delete() {
 
