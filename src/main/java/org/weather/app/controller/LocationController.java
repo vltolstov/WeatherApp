@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.weather.app.dto.AddLocationRequest;
 import org.weather.app.dto.AddLocationResponse;
+import org.weather.app.mapper.LocationMapper;
 import org.weather.app.model.Location;
 import org.weather.app.model.User;
 import org.weather.app.repository.LocationRepository;
@@ -20,6 +21,7 @@ public class LocationController {
 
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
+    private final LocationMapper locationMapper;
 
     @PostMapping("/add")
     public AddLocationResponse add(@RequestBody AddLocationRequest addLocationRequest, HttpServletRequest httpServletRequest) {
@@ -32,11 +34,7 @@ public class LocationController {
             return new AddLocationResponse(false, "Город уже добавлен");
         }
 
-        Location location = new Location();
-        location.setUser(user);
-        location.setName(addLocationRequest.name());
-        location.setLatitude(addLocationRequest.latitude());
-        location.setLongitude(addLocationRequest.longitude());
+        Location location = locationMapper.toEntity(addLocationRequest, user);
         locationRepository.save(location);
 
         return new AddLocationResponse(true, "Добавлен");
