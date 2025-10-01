@@ -9,9 +9,9 @@ import org.weather.app.dto.UserLoginRequest;
 import org.weather.app.dto.UserRegistrationRequest;
 import org.weather.app.exception.InvalidCredentialsException;
 import org.weather.app.exception.UsernameAlreadyExistsException;
+import org.weather.app.mapper.UserMapper;
 import org.weather.app.model.User;
 import org.weather.app.repository.UserRepository;
-import org.weather.app.util.MappingUtil;
 import org.weather.app.util.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -24,6 +24,7 @@ public class AuthService {
     private final SessionService sessionService;
     private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
     private final static int SESSION_EXPIRE_TIME = 60 * 60 * 24;
+    private final UserMapper userMapper;
 
     @Transactional
     public void registerUser(UserRegistrationRequest request) {
@@ -34,7 +35,7 @@ public class AuthService {
 
         String hashedPassword = PasswordEncoder.hashPassword(request.getPassword());
 
-        User user = MappingUtil.convertToEntity(request);
+        User user = userMapper.toEntity(request);
         user.setPassword(hashedPassword);
 
         try {
