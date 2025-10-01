@@ -50,11 +50,12 @@ public class AuthService {
 
     public String loginUser(UserLoginRequest request) {
 
-        User user = userRepository.getUserByName(request.getName());
-
         if (!userRepository.existsByName(request.getName())) {
             throw new InvalidCredentialsException("Login or password incorrect");
         }
+
+        User user = userRepository.getUserByName(request.getName());
+
         if (!PasswordEncoder.verifyPassword(request.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException("Login or password incorrect");
         }
