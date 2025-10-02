@@ -3,12 +3,29 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main}">
 <head>
-    <title>Index page</title>
+    <title>Weather App</title>
 </head>
 <body>
 
 <section layout:fragment="content">
-    <p>Index page</p>
+    <div th:if="${locationsNotFound}" th:text="${locationsNotFound}"></div>
+
+    <div class="container location-flex-container">
+        <div th:each="location : ${userWeatherList}" class="location-card">
+            <button class="remove-btn" onclick="removeCity(this)">×</button>
+            <div class="location-icon">
+                <img th:src="'https://openweathermap.org/img/wn/' + ${location.weather[0].icon} + '@2x.png'"
+                     alt=" ">
+            </div>
+            <div class="location-name" th:inline="text">[[${location.name}]] ([[${location.sys.country}]])</div>
+            <div class="location-coords" th:inline="text">
+                [[${location.coordinate.longitude}]]°N,
+                [[${location.coordinate.latitude}]]°E
+            </div>
+            <div class="location-temp" th:inline="text">[[${location.main.temp}]]°C</div>
+            <div class="location-weather-desc" th:text="${location.weather[0].description}"></div>
+        </div>
+    </div>
 </section>
 
 </body>
