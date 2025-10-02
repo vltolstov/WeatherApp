@@ -9,6 +9,7 @@ import org.weather.app.model.User;
 @Mapper(componentModel = "spring")
 public interface LocationMapper {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "addLocationRequest.name")
     @Mapping(target = "longitude", source = "addLocationRequest.longitude")
     @Mapping(target = "latitude", source = "addLocationRequest.latitude")
