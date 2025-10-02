@@ -1,3 +1,15 @@
+const globalAlert = document.querySelector('.global-alert');
+
+function showAlert(message, type) {
+    globalAlert.textContent = message;
+    globalAlert.className = `global-alert alert alert-${type} text-center`;
+    globalAlert.classList.remove('d-none');
+
+    setTimeout(() => {
+        globalAlert.classList.add('d-none');
+    }, 1000);
+}
+
 document.querySelectorAll('.add-city-form').forEach(form => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -5,7 +17,6 @@ document.querySelectorAll('.add-city-form').forEach(form => {
         const cityName = form.dataset.cityName;
         const cityLongitude = parseFloat(form.dataset.cityLongitude);
         const cityLatitude = parseFloat(form.dataset.cityLatitude);
-        const errorMessage = form.querySelector('.error-message');
 
         try {
             const response = await fetch(form.action, {
@@ -19,16 +30,9 @@ document.querySelectorAll('.add-city-form').forEach(form => {
             });
             const result = await response.json();
 
-            if (result.success) {
-                errorMessage.textContent = result.message;
-                errorMessage.style.color = 'green';
-            } else {
-                errorMessage.textContent = result.message;
-                errorMessage.style.color = 'red';
-            }
+            showAlert(result.message, result.success ? 'success' : 'danger');
         } catch (err) {
-            errorMessage.textContent = 'Ошибка сервера';
-            errorMessage.style.color = 'red';
+            showAlert('Ошибка сервера', 'danger');
         }
     });
 });
