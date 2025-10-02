@@ -6,7 +6,6 @@ import org.weather.app.model.User;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
@@ -16,6 +15,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     boolean existsByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
 
-    Optional<Location> findByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
+    boolean existsByUser(User user);
 
 }
