@@ -14,6 +14,8 @@ import org.weather.app.dto.WeatherResponseDto;
 import org.weather.app.service.WeatherService;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -142,8 +144,8 @@ public class WeatherServiceIT {
     @Test
     @DisplayName("Получение погоды по координатам")
     public void testGetWeatherRequest_ShouldReturnWeatherByCoordinate() {
-        Double longitude = 82.9344;
-        Double latitude = 55.0411;
+        BigDecimal longitude = new BigDecimal("82.9344");
+        BigDecimal latitude = new BigDecimal("55.0411");
         String jsonResponse = """
                     {
                         "coord": {
@@ -156,15 +158,15 @@ public class WeatherServiceIT {
         when(mockResponseSpec.bodyToMono(String.class)).thenReturn(Mono.just(jsonResponse));
 
         WeatherResponseDto weatherResponseDto = weatherService.getWeatherByCoordinates(longitude, latitude);
-        Assertions.assertEquals(longitude, weatherResponseDto.getCoordinate().getLongitude());
-        Assertions.assertEquals(latitude, weatherResponseDto.getCoordinate().getLatitude());
+        Assertions.assertEquals(0, longitude.compareTo(weatherResponseDto.getCoordinate().getLongitude()));
+        Assertions.assertEquals(0, latitude.compareTo(weatherResponseDto.getCoordinate().getLatitude()));
     }
 
     @Test
     @DisplayName("Получение необходимых данных о погоде по координатам")
     public void testGetWeatherRequest_ShouldReturnWeatherDataByCoordinate() {
-        Double longitude = 82.9344;
-        Double latitude = 55.0411;
+        BigDecimal longitude = new BigDecimal("82.9344");
+        BigDecimal latitude = new BigDecimal("55.0411");
         String jsonResponse = """
                     {
                         "coord": {
