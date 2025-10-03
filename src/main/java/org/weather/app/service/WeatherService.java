@@ -39,7 +39,6 @@ public class WeatherService {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("lat", latitude)
                 .queryParam("lon", longitude)
-                .queryParam("lang", "ru")
                 .queryParam("units", "metric")
                 .queryParam("appid", apiKey)
                 .toUriString();
@@ -50,7 +49,6 @@ public class WeatherService {
     private String buildUrl(String param, String value) {
         return UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam(param, value)
-                .queryParam("lang", "ru")
                 .queryParam("units", "metric")
                 .queryParam("appid", apiKey)
                 .toUriString();
