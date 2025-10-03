@@ -2,7 +2,7 @@ package org.weather.app.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.weather.app.dto.AddLocationRequest;
+import org.weather.app.dto.LocationRequest;
 import org.weather.app.model.Location;
 import org.weather.app.model.User;
 
@@ -10,10 +10,10 @@ import org.weather.app.model.User;
 public interface LocationMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "name", source = "addLocationRequest.name")
-    @Mapping(target = "longitude", source = "addLocationRequest.longitude")
-    @Mapping(target = "latitude", source = "addLocationRequest.latitude")
+    @Mapping(target = "name", source = "locationRequest.location")
+    @Mapping(target = "longitude", source = "locationRequest.longitude")
+    @Mapping(target = "latitude", source = "locationRequest.latitude")
     @Mapping(target = "user", source = "user")
-    Location toEntity(AddLocationRequest addLocationRequest, User user);
+    Location toEntity(LocationRequest locationRequest, User user);
 
 }
