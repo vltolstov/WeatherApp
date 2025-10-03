@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,6 @@ public class CityDto {
     private List<Map<String, String>> langs;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @Getter
     @Setter
     public static class CoordDto {
         @JsonProperty("lon")
@@ -33,5 +33,17 @@ public class CityDto {
 
         @JsonProperty("lat")
         private BigDecimal latitude;
+
+        public BigDecimal getLongitude() {
+            return normalize(longitude);
+        }
+
+        public BigDecimal getLatitude() {
+            return normalize(latitude);
+        }
+
+        private BigDecimal normalize(BigDecimal value) {
+            return value == null ? null : value.setScale(4, RoundingMode.HALF_UP);
+        }
     }
 }
