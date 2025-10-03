@@ -12,7 +12,12 @@
 
     <div class="container location-flex-container">
         <div th:each="location : ${userWeatherList}" class="location-card">
-            <button class="remove-btn" onclick="removeCity(this)">×</button>
+            <form th:action="@{locations/delete}" class="location-form"
+                  th:data-location-name="${location.name}"
+                  th:data-location-longitude="${location.coordinate.longitude}"
+                  th:data-location-latitude="${location.coordinate.latitude}">
+                <button class="remove-btn">×</button>
+            </form>
             <div class="location-icon">
                 <img th:src="'https://openweathermap.org/img/wn/' + ${location.weather[0].icon} + '@2x.png'"
                      alt=" ">

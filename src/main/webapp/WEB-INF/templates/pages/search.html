@@ -10,18 +10,16 @@
 <section layout:fragment="content">
     <div th:if="${cityNotFound}" th:text="${cityNotFound}"></div>
 
-    <div class="global-alert alert d-none text-center" role="alert"></div>
-
     <ul class="search-result-list">
-        <li th:each="city : ${cities}">
-            <form th:action="@{locations/add}" class="add-city-form"
-                  th:data-city-name="${city.name}"
-                  th:data-city-longitude="${city.coord.getLongitude()}"
-                  th:data-city-latitude="${city.coord.getLatitude()}">
+        <li th:each="location : ${cities}">
+            <form th:action="@{locations/add}" class="location-form"
+                  th:data-location-name="${location.name}"
+                  th:data-location-longitude="${location.coord.longitude}"
+                  th:data-location-latitude="${location.coord.latitude}">
                 <div class="d-flex align-items-center justify-content-between w-100">
                     <div>
-                        <span th:text="${city.name}"></span>
-                        (<span th:text="${city.country}"></span>)
+                        <span th:text="${location.name}"></span>
+                        (<span th:text="${location.country}"></span>)
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <button type="submit" class="btn btn-sm btn-outline-primary">Добавить</button>
