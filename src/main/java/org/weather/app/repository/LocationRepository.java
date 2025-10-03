@@ -11,10 +11,9 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     List<Location> findByUser(User user);
 
-    long deleteByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
-
     boolean existsByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
 
     boolean existsByUser(User user);
 
+    long deleteByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
 }
