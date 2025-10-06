@@ -15,5 +15,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     boolean existsByUser(User user);
 
-    long deleteByUserAndLongitudeAndLatitude(User user, BigDecimal longitude, BigDecimal latitude);
+    void deleteById(Long id);
 }

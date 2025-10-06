@@ -43,7 +43,7 @@ public class CityDto {
         }
 
         private BigDecimal normalize(BigDecimal value) {
-            return value == null ? null : value.setScale(4, RoundingMode.HALF_UP);
+            return value == null ? null : value.setScale(4, RoundingMode.DOWN);
         }
     }
 }

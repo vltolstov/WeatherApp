@@ -36,7 +36,12 @@ public class IndexController {
 
         List<Location> locations = locationRepository.findByUser(user);
         List<WeatherResponseDto> userWeatherList = locations.stream()
-                .map(location -> weatherService.getWeatherByCoordinates(location.getLongitude(), location.getLatitude()))
+                .map(location -> {
+                    WeatherResponseDto dto = weatherService.getWeatherByCoordinates(
+                            location.getLongitude(), location.getLatitude());
+                    dto.setId(Math.toIntExact(location.getId()));
+                    return dto;
+                })
                 .toList();
         model.addAttribute("userWeatherList", userWeatherList);
 

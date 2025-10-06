@@ -1,6 +1,7 @@
 package org.weather.app.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.weather.app.dto.LocationRequest;
@@ -36,17 +37,12 @@ public class LocationService {
     }
 
     @Transactional
-    public LocationResponse deleteLocation(User user, LocationRequest locationRequest) {
-        long deletedCount = locationRepository.deleteByUserAndLongitudeAndLatitude(
-                user,
-                locationRequest.longitude(),
-                locationRequest.latitude()
-        );
-
-        if (deletedCount == 0) {
+    public LocationResponse deleteLocationById(Long id) {
+        try {
+            locationRepository.deleteById(id);
+            return new LocationResponse(true, "Город удален");
+        } catch (EmptyResultDataAccessException e) {
             return new LocationResponse(false, "Город не найден");
         }
-
-        return new LocationResponse(true, "Город удален");
     }
 }

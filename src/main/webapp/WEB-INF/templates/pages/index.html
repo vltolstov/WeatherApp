@@ -13,6 +13,7 @@
     <div class="container location-flex-container">
         <div th:each="location : ${userWeatherList}" class="location-card">
             <form th:action="@{locations/delete}" class="location-form"
+                  th:data-location-id="${location.id}"
                   th:data-location-name="${location.name}"
                   th:data-location-longitude="${location.coordinate.longitude}"
                   th:data-location-latitude="${location.coordinate.latitude}">
